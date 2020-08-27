@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: purple;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0.5em 0;
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    background-color: purple;
+    color: #fff;
+}
+
+.header-large {
+    padding: 4em;
+    display: block;
+}
+
+.actions {
+    text-align: center;
+    padding: 4em;
+}
+
+.actions > .button {
+    margin: 0 1em;
+}
+
+.content {
+    margin: 1em auto;
+    max-width: 1200px;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.8em 1.2em;
+    color: #fff;
+    font-weight: bold;
+    background-color: red;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0.5em;
+}
+
+.button:focus {
+   outline: 1px solid black;
+}
+
+.button-purple {
+    background-color: rgb(124, 21, 124);
+    border: 1px solid rgb(104, 18, 104);
+}
+
+.button-purple:hover {
+    background-color: rgb(139, 32, 139);
+}
+
+.button-orange {
+    background-color: rgb(240, 136, 0);
+    border: 1px solid rgb(180, 92, 9);
+}
+
+.button-orange:hover {
+    background-color: rgb(233, 143, 25);
+}
+
+.button-green {
+    background-color: green;
+    border: 1px solid rgb(4, 88, 4);
+}
+
+.button-green:hover {
+    background-color: rgb(22, 121, 22);
+}
