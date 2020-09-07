@@ -42,6 +42,15 @@ class Router
         $this->register('GET', $path, $callback);
     }
 
+      /**
+     * @param string $path
+     * @param callable $callback
+     * 
+     */
+    public function post(string $path, callable $callback) {
+        $this->register('POST', $path, $callback);
+    }
+
     /**
      * Try to match the registered routes against the requested uri and call the
      * callback accordingly.
