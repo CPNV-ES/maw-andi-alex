@@ -29,6 +29,15 @@ h1 {
     display: block;
 }
 
+.logo {
+    max-height: 3em;
+    margin: 0 1em;
+}
+
+.header-title {
+    text-shadow: 0.2px 0.2px 2px black;
+}
+
 .actions {
     text-align: center;
     padding: 4em;
@@ -83,4 +92,13 @@ h1 {
 
 .button-green:hover {
     background-color: rgb(22, 121, 22);
+}
+
+.form > * {
+    margin: 0.5em 0;
+}
+
+.form > input[type="text"] {
+    display: block;
+    width: 100%;
 }
