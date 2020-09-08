@@ -2,7 +2,11 @@
 
 require 'core/router.php';
 require 'core/renderer.php';
+require 'core/model.php';
 
+$config = parse_ini_file('config.ini');
+
+Model::set_config($config);
 $router = new Router();
 $renderer = Renderer::get_instance();
 
