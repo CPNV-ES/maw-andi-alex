@@ -27,11 +27,11 @@ $router->get('/exercises/new', function () use ($renderer) {
 $router->post('/exercises', function () {
     require_once 'models/exercise.php';
 
-    Exercise::insert([
+    $exercise = Exercise::insert([
         'title' => $_POST['title'],
     ]);
 
-    header('Location: /exercises/1/fields');
+    header('Location: /exercises/' . $exercise[0]->id . '/fields');
     exit;
 });
 
