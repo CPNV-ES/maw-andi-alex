@@ -1,3 +1,11 @@
+<?php
+
+require_once 'models/exercise.php';
+
+$test = Exercise::select()->where('state', 'answering')->execute();
+print_r($test);
+?>
+
 <header class="header">
     <a href="/">
         <img src="/static/logo.png" class="logo" alt="logo">
