@@ -180,6 +180,15 @@ class QueryBuilder
             $this->statement->execute();
         }
 
+        if ($this->query_type == QueryType::INSERT) {
+            $stmt = $this->pdo->prepare(
+                "SELECT * FROM `" . $this->table . "` WHERE id = ?"
+            );
+
+            $stmt->execute([$this->pdo->lastInsertID()]);
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
+        }
+
         return $this->statement->fetchAll(PDO::FETCH_CLASS);
     }
 
