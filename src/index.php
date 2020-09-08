@@ -35,4 +35,9 @@ $router->post('/exercises', function () {
     exit;
 });
 
+// Take an Exercise Page
+$router->get('/exercises/answering', function () use ($renderer) {
+    $renderer->view('views/exercises_answering.php')->render();
+});
+
 $router->execute();
