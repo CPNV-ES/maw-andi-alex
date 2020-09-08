@@ -19,8 +19,20 @@ $router->get('/', function () use ($renderer) {
 });
 
 // New Exercise Page
-$router->get('/exercises/new', function() use ($renderer) {
+$router->get('/exercises/new', function () use ($renderer) {
     $renderer->view('views/exercises_new.php')->render();
+});
+
+// Create a new Exercise (redirect from /exercises/new)
+$router->post('/exercises', function () {
+    require_once 'models/exercise.php';
+
+    Exercise::insert([
+        'title' => $_POST['title'],
+    ]);
+
+    header('Location: /exercises/1/fields');
+    exit;
 });
 
 $router->execute();
