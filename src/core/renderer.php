@@ -9,6 +9,8 @@ class Renderer
 
     private $layout_path;
 
+    private $values;
+
     private function __construct()
     {
     }
@@ -62,13 +64,35 @@ class Renderer
     }
 
     /**
+     * @param array $values The values that are transformed into variables 
+     * inside the views
+     * 
+     * @return Renderer
+     */
+    public function values(array $values) : Renderer
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
+    /**
      * Allows to require the given layout that will then render the view 
      * registered inside the Renderer object
      * 
      * @return Renderer
      */
-    public function render()
+    public function render() : Renderer
     {
+        global $values;
+        $values = $this->values;
+
+        // Note: This will overwrite any existing global variables
+        foreach($values as $key => $value) {
+            global $$key;
+            $$key = $value;
+        }
+
         require($this->layout_path);
 
         return $this;

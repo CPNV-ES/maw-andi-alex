@@ -180,6 +180,15 @@ class QueryBuilder
             $this->statement->execute();
         }
 
+        if ($this->query_type == QueryType::INSERT) {
+            $stmt = $this->pdo->prepare(
+                "SELECT * FROM `" . $this->table . "` WHERE id = ?"
+            );
+
+            $stmt->execute([$this->pdo->lastInsertID()]);
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
+        }
+
         return $this->statement->fetchAll(PDO::FETCH_CLASS);
     }
 
@@ -194,7 +203,8 @@ class QueryBuilder
                 $query .= " $table.$field,";
             }
 
-            $query = substr($query, 0, count($query) - 2);
+            // Remove trailing comma
+            $query = substr($query, 0, strlen($query) - 1);
         } else {
             $query = "SELECT *";
         }

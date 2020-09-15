@@ -74,17 +74,11 @@ class Router
             preg_match_all('#^' . $route->path . '$#', $request_uri, $matches, PREG_OFFSET_CAPTURE);
 
             foreach ($matches as $match) {
-                if ($match) {
+                if ($match && $_SERVER['REQUEST_METHOD'] == $route->method) {
                     ($route->callback)();
                     // We don't want to match more than once    
                     break;
                 }
-            }
-
-            // If we have a match on the route, we don't want to execute other
-            // route callbacks.
-            if ($matches[0]) {
-                break;
             }
         }
     }
@@ -119,7 +113,7 @@ class Route
 
     public function __construct(string $method, string $path, callable $callback)
     {
-        $this->$method = $method;
+        $this->method = $method;
         $this->path = $path;
         $this->callback = $callback;
     }
