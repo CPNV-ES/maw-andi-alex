@@ -211,6 +211,10 @@ class QueryBuilder
 
         $query .= " FROM $table";
 
+        if (isset($this->join)) {
+            $query .= $this->handle_join_building();
+        }
+
         if (isset($this->where)) {
             $key = key($this->where);
             $query .= " WHERE $key ='" . $this->where[$key] ."'";
@@ -223,10 +227,6 @@ class QueryBuilder
 
         if (isset($this->group_by)) {
             $query .= " GROUP BY " . $this->group_by;
-        }
-
-        if (isset($this->join)) {
-            $query .= $this->handle_join_building();
         }
 
         $this->statement = $this->pdo->prepare($query);
