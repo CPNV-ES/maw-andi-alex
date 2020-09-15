@@ -203,7 +203,8 @@ class QueryBuilder
                 $query .= " $table.$field,";
             }
 
-            $query = substr($query, 0, count($query) - 2);
+            // Remove trailing comma
+            $query = substr($query, 0, strlen($query) - 1);
         } else {
             $query = "SELECT *";
         }
