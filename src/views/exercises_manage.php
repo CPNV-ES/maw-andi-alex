@@ -17,7 +17,7 @@
                     <tr>
                         <td>Name of exercise</td>
                         <td>
-                            <a href="{{ exercise.name }}" class="icon-button">
+                            <a href="" class="icon-button">
                                 <img src="/static/check.svg" alt="Be ready for answers">
                             </a>
                             <a href="" class="icon-button">

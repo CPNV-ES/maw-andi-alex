@@ -90,6 +90,14 @@ table a {
    outline: 1px solid black;
 }
 
+.icon-button {
+    text-decoration: none;
+}
+
+.icon-button:hover {
+   fill: rgb(99, 23, 99);
+}
+
 .button-purple {
     background-color: rgb(124, 21, 124);
     border: 1px solid rgb(104, 18, 104);
