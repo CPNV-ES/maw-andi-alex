@@ -244,7 +244,7 @@ class QueryBuilder
         if (array_key_exists($this->join, $this->has_many)) {
             $join_field = $this->has_many[$this->join];
             // TODO: Is there a better way to do this ?
-            return " INNER JOIN $join_table ON $table.$join_field = $join_table.$join_primary_key";
+            return " LEFT JOIN $join_table ON $table.$join_primary_key = $join_table.$join_field";
         }
 
         // has one relation
