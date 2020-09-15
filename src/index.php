@@ -42,10 +42,10 @@ $router->get('/exercises', function () use ($renderer) {
 // Take an Exercise Page
 $router->get('/exercises/answering', function () use ($renderer) {
     require_once 'models/exercise.php';
-    global $exercises;
+
     $exercises = Exercise::select()->where('state', 'answering')->execute();
 
-    $renderer->view('views/exercises_answering.php')->render();
+    $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
 
 $router->execute();
