@@ -200,7 +200,18 @@ class QueryBuilder
             $query = "SELECT";
 
             foreach ($this->fields as $field) {
-                $query .= " $table.$field,";
+                // Handle the fields, they could be a function call
+                if (is_array($field)) {
+                    $query .= " " . $field[0] . "(" . $field[1] . ")";
+                    
+                    if (isset($field[2])) {
+                        $query .= " AS ". $field[2];
+                    }
+
+                    $query .= ',';
+                } else {
+                    $query .= " $table.$field,";
+                }
             }
 
             // Remove trailing comma
