@@ -35,4 +35,9 @@ $router->post('/exercises', function () {
     exit;
 });
 
+$router->get('/exercises', function () use ($renderer) {
+    $renderer->view('views/exercises_manage.php')->render();
+});
+
+
 $router->execute();
