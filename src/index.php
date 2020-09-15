@@ -36,7 +36,33 @@ $router->post('/exercises', function () {
 });
 
 $router->get('/exercises', function () use ($renderer) {
-    $renderer->view('views/exercises_manage.php')->render();
+    require_once 'models/exercise.php';
+    require_once 'models/question.php';
+
+    $building_exercises = Exercise::select([
+        'id',
+        'title',
+        'state',
+        ['count', 'exercises_id', 'nb_questions']
+    ])->join(Question::class)->where('state', 'building')->group_by('exercises.id')->execute();
+
+    $answering_exercises = Exercise::select([
+        'id',
+        'title',
+        'state',
+    ])->where('state', 'answering')->execute();
+
+    $closed_exercises = Exercise::select([
+        'id',
+        'title',
+        'state',
+    ])->where('state', 'closed')->execute();
+
+    $renderer->view('views/exercises_manage.php')->values([
+        'building_exercises' => $building_exercises,
+        'answering_exercises' => $answering_exercises,
+        'closed_exercises' => $closed_exercises,
+    ])->render();
 });
 
 // Take an Exercise Page
