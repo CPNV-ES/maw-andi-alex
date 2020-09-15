@@ -95,7 +95,7 @@ class QueryBuilder
      * 
      * @return QueryBuilder
      */
-    public function fields(array $fields)
+    public function fields(array $fields = null)
     {
         $this->fields = $fields;
 
@@ -212,7 +212,7 @@ class QueryBuilder
 
         if (isset($this->where)) {
             $key = key($this->where);
-            $query .= " WHERE $key =" . $this->where[$key];
+            $query .= " WHERE $key ='" . $this->where[$key] ."'";
         }
 
         if (isset($this->order_by)) {

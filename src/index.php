@@ -39,5 +39,9 @@ $router->get('/exercises', function () use ($renderer) {
     $renderer->view('views/exercises_manage.php')->render();
 });
 
+// Take an Exercise Page
+$router->get('/exercises/answering', function () use ($renderer) {
+    $renderer->view('views/exercises_answering.php')->render();
+});
 
 $router->execute();
