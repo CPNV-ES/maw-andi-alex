@@ -52,10 +52,12 @@ abstract class Model
 
 	protected static function has_many()
 	{
+		return [];
 	}
 
 	protected static function has_one()
 	{
+		return [];
 	}
 
 	public static function insert(array $fields)

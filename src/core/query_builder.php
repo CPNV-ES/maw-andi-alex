@@ -107,7 +107,7 @@ class QueryBuilder
      * 
      * @return QueryBuilder
      */
-    public function has_many($classes)
+    public function has_many($classes = [])
     {
         $this->has_many = $classes;
 
@@ -119,7 +119,7 @@ class QueryBuilder
      * 
      * @return QueryBuilder
      */
-    public function has_one($classes)
+    public function has_one($classes = [])
     {
         $this->has_one = $classes;
 
@@ -131,7 +131,7 @@ class QueryBuilder
      * 
      * @return QueryBuilder
      */
-    public function belongs_to($classes)
+    public function belongs_to($classes = [])
     {
         $this->belongs_to = $classes;
 
