@@ -1,8 +1,6 @@
 <?php
 
-require_once 'models/exercise.php';
 
-$exercises = Exercise::select()->where('state', 'answering')->execute();
 ?>
 
 <header class="header">
@@ -12,7 +10,7 @@ $exercises = Exercise::select()->where('state', 'answering')->execute();
 </header>
 <div class="content">
     <div class="exercise-list">
-        <?php foreach($exercises as $exercise): ?>
+        <?php foreach($GLOBALS['exercises'] as $exercise): ?>
         <div class="exercise-card">
             <div class="exercise-title"><?= $exercise->title ?></div>
             <a href="exercises/<?= $exercise->id ?>/fulfillments/new" class="button button-purple">Take it</a>
