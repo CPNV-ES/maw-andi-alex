@@ -5,6 +5,6 @@
 <div class="actions">
     <a href="exercises/answer" class="button button-purple">Take an exercise</a>
     <a href="exercises/new" class="button button-orange">Create an exercise</a>
-    <a href="exercises/manage" class="button button-green">Manage an exercise</a>
+    <a href="exercises" class="button button-green">Manage an exercise</a>
 </div>
 </div>
