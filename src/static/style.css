@@ -16,6 +16,29 @@ h1 {
     margin: 0.5em 0;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 0.8em;
+    padding-left: 0;
+}
+
+td:last-child {
+    text-align: right;
+}
+
+th, tr  {
+    border-bottom: 1px solid #ccc;
+}
+
+table a {
+    text-decoration: none;
+}
+
 .header {
     display: flex;
     width: 100%;
@@ -67,6 +90,14 @@ h1 {
    outline: 1px solid black;
 }
 
+.icon-button {
+    text-decoration: none;
+}
+
+.icon-button:hover {
+   fill: rgb(99, 23, 99);
+}
+
 .button-purple {
     background-color: rgb(124, 21, 124);
     border: 1px solid rgb(104, 18, 104);
@@ -101,4 +132,38 @@ h1 {
 .form > input[type="text"] {
     display: block;
     width: 100%;
+}
+
+.exercise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.exercise-card {
+    flex-basis: 100%;
+    background-color: #F8F2FF;
+    border-radius: 1em;
+    text-align: center;
+    padding: 1em;
+}
+
+.exercise-title {
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+}
+
+.exercise-card > .button{
+    display: block;
+}
+
+.exercise-categories {
+    display: flex;
+    flex: 1 0;
+}
+
+.exercise-categories > * {
+    width: calc(100% / 3);
+    padding: 0 0.5em;
 }

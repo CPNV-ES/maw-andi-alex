@@ -95,7 +95,7 @@ class QueryBuilder
      * 
      * @return QueryBuilder
      */
-    public function fields(array $fields)
+    public function fields(array $fields = null)
     {
         $this->fields = $fields;
 
@@ -203,7 +203,8 @@ class QueryBuilder
                 $query .= " $table.$field,";
             }
 
-            $query = substr($query, 0, count($query) - 2);
+            // Remove trailing comma
+            $query = substr($query, 0, strlen($query) - 1);
         } else {
             $query = "SELECT *";
         }
@@ -212,7 +213,7 @@ class QueryBuilder
 
         if (isset($this->where)) {
             $key = key($this->where);
-            $query .= " WHERE $key =" . $this->where[$key];
+            $query .= " WHERE $key ='" . $this->where[$key] ."'";
         }
 
         if (isset($this->order_by)) {
