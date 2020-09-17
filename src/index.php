@@ -70,4 +70,15 @@ $router->get('/exercises/answering', function () use ($renderer) {
     $renderer->view('views/exercises_answering.php')->render();
 });
 
+$router->get('/exercises/:id/delete', function ($params) {
+    if (is_int($params['id'])) {
+        // TODO: Only allow deletion of exercises that are in "building" or
+        // "closed" state
+        Exercise::delete()->where('id', $params['id']);
+    }
+    
+    header('Location: /exercises');
+    exit;
+});
+
 $router->execute();
