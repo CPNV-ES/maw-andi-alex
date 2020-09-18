@@ -187,6 +187,9 @@ class QueryBuilder
 
             $stmt->execute([$this->pdo->lastInsertID()]);
             return $stmt->fetchAll(PDO::FETCH_CLASS);
+        } else if ($this->query_type == QueryType::DELETE) {
+            // We cannot call fecth on a DELETE statment, instead return row count
+            return $this->statement->rowCount();
         }
 
         return $this->statement->fetchAll(PDO::FETCH_CLASS);
