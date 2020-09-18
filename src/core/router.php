@@ -110,6 +110,8 @@ class Router
      *                              parameters
      * 
      * @return array    The route parameters ex: ["id" => 123]
+     * 
+     * NOTE: Float values are cast into int
      */
     private function extract_params($route, $request_uri) : array {
         $parameters = [];
@@ -119,7 +121,13 @@ class Router
         // Skip the first index as it contains the full match.
         $length = count($matches);
         for ($i = 1; $i < $length; $i++) {
-            $parameters[$route->parameters[$i]] = $matches[$i][0];
+            $value = $matches[$i][0];
+            
+            if (is_numeric($value)) {
+                $value = (int) $value;
+            }
+
+            $parameters[$route->parameters[$i-1]] = $value;
         }
 
         return $parameters;
