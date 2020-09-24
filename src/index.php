@@ -86,4 +86,20 @@ $router->get('/exercises/:id/delete', function ($params) {
     exit;
 });
 
+$router->get('/exercises/:id/status/answering', function ($params) {
+    require_once 'models/exercise.php';
+    
+    if (is_int($params['id'])) {
+        Exercise::update([
+            'state' => 'answering'
+        ])->where([
+            ['id', $params['id']],
+            ['state', 'building']
+        ])->execute();
+    }
+    
+    header('Location: /exercises');
+    exit;
+});
+
 $router->execute();
