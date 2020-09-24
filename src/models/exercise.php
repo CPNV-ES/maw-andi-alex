@@ -1,6 +1,6 @@
 <?php
 
-require_once 'core/model.php';
+use Expreql\Expreql\Model;
 
 require_once 'models/question.php';
 

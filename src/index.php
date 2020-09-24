@@ -1,8 +1,11 @@
 <?php
 
+require '../vendor/autoload.php';
+
 require 'core/router.php';
 require 'core/renderer.php';
-require 'core/model.php';
+
+use Expreql\Expreql\Model;
 
 $config = parse_ini_file('config.ini');
 
@@ -71,10 +74,12 @@ $router->get('/exercises/answering', function () use ($renderer) {
 });
 
 $router->get('/exercises/:id/delete', function ($params) {
+    require_once 'models/exercise.php';
+
     if (is_int($params['id'])) {
         // TODO: Only allow deletion of exercises that are in "building" or
         // "closed" state
-        Exercise::delete()->where('id', $params['id']);
+        Exercise::delete()->where('id', $params['id'])->execute();
     }
     
     header('Location: /exercises');
