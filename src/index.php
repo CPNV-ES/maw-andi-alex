@@ -1,8 +1,11 @@
 <?php
 
+require '../vendor/autoload.php';
+
 require 'core/router.php';
 require 'core/renderer.php';
-require 'core/model.php';
+
+use Expreql\Expreql\Model;
 
 $config = parse_ini_file('config.ini');
 
@@ -36,7 +39,33 @@ $router->post('/exercises', function () {
 });
 
 $router->get('/exercises', function () use ($renderer) {
-    $renderer->view('views/exercises_manage.php')->render();
+    require_once 'models/exercise.php';
+    require_once 'models/question.php';
+
+    $building_exercises = Exercise::select([
+        'id',
+        'title',
+        'state',
+        ['count', 'exercises_id', 'nb_questions']
+    ])->join(Question::class)->where('state', 'building')->group_by('exercises.id')->execute();
+
+    $answering_exercises = Exercise::select([
+        'id',
+        'title',
+        'state',
+    ])->where('state', 'answering')->execute();
+
+    $closed_exercises = Exercise::select([
+        'id',
+        'title',
+        'state',
+    ])->where('state', 'closed')->execute();
+
+    $renderer->view('views/exercises_manage.php')->values([
+        'building_exercises' => $building_exercises,
+        'answering_exercises' => $answering_exercises,
+        'closed_exercises' => $closed_exercises,
+    ])->render();
 });
 
 // Take an Exercise Page
@@ -46,6 +75,19 @@ $router->get('/exercises/answering', function () use ($renderer) {
     $exercises = Exercise::select()->where('state', 'answering')->execute();
 
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
+});
+
+$router->get('/exercises/:id/delete', function ($params) {
+    require_once 'models/exercise.php';
+
+    if (is_int($params['id'])) {
+        // TODO: Only allow deletion of exercises that are in "building" or
+        // "closed" state
+        Exercise::delete()->where('id', $params['id'])->execute();
+    }
+    
+    header('Location: /exercises');
+    exit;
 });
 
 $router->execute();

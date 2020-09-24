@@ -2,7 +2,6 @@
     <a href="/">
         <img src="/static/logo.png" class="logo" alt="logo">
     </a>
-    <p class="header-context"><span>Exercise: </span><span>exercise name here</span></p>
 </header>
 <div class="content">
     <h1>New Exercise</h1>
