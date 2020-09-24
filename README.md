@@ -7,3 +7,4 @@ The project was tested using :
 
 - PHP 7.3.19-1
 - MariaDB 10.3.23
+- Composer 1.8.4 
