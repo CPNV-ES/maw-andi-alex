@@ -89,7 +89,7 @@ $router->get('/exercises/:id/delete', function ($params) {
 
 $router->get('/exercises/:id/status/answering', function ($params) {
     require_once 'models/exercise.php';
-    
+
     if (is_int($params['id'])) {
         Exercise::update([
             'state' => 'answering'
@@ -98,7 +98,23 @@ $router->get('/exercises/:id/status/answering', function ($params) {
             ['state', 'building']
         ])->execute();
     }
-    
+
+    header('Location: /exercises');
+    exit;
+});
+
+$router->get('/exercises/:id/status/closed', function ($params) {
+    require_once 'models/exercise.php';
+
+    if (is_int($params['id'])) {
+        Exercise::update([
+            'state' => 'closed'
+        ])->where([
+            ['id', $params['id']],
+            ['state', 'answering']
+        ])->execute();
+    }
+
     header('Location: /exercises');
     exit;
 });
