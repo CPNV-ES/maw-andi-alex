@@ -5,11 +5,11 @@ require '../vendor/autoload.php';
 require 'core/router.php';
 require 'core/renderer.php';
 
-use Expreql\Expreql\Model;
+use Expreql\Expreql\Database;
 
 $config = parse_ini_file('config.ini');
 
-Model::set_config($config);
+Database::set_config($config);
 $router = new Router();
 $renderer = Renderer::get_instance();
 
