@@ -73,6 +73,25 @@ $router->get('/exercises/answering', function () use ($renderer) {
     $renderer->view('views/exercises_answering.php')->render();
 });
 
+// Edit fields page
+$router->get('/exercises/:id/fields', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/question.php';
+
+    if (!is_int($params['id'])) {
+        // Redirect on index by default
+        header('Location: /');
+        exit;
+    };
+
+    $exercise = Exercise::select()->where('exercises.id', $params['id'])
+        ->join(Question::class)->execute();
+
+    $renderer->view('views/exercises_fields.php')->values([
+        'exercise' => $exercise,
+    ])->render();
+});
+
 $router->get('/exercises/:id/delete', function ($params) {
     require_once 'models/exercise.php';
 
