@@ -1,13 +1,26 @@
 <?php
 
+/**
+ * [Description Renderer]
+ */
 class Renderer
 {
-
     private static $instance = null;
 
+    /**
+     * @var string The path of the view file to use
+     */
     public $view_path;
 
+    /**
+     * @var string The path of the layout file to use
+     */
     private $layout_path;
+
+    /**
+     * @var array The values that are transformed into variables inside the views
+     */
+    private $values;
 
     private function __construct()
     {
@@ -18,7 +31,7 @@ class Renderer
      * 
      * @return Renderer
      */
-    public static function get_instance()
+    public static function get_instance() : Renderer
     {
         if (self::$instance == null) {
             self::$instance = new Renderer();
@@ -34,7 +47,7 @@ class Renderer
      * 
      * @return Renderer
      */
-    public function view(string $view_path)
+    public function view(string $view_path) : Renderer
     {
         if (!file_exists($view_path)) {
             throw new RuntimeException('Could not find the requested view');
@@ -50,7 +63,7 @@ class Renderer
      * 
      * @return Renderer
      */
-    public function layout(string $layout_path)
+    public function layout(string $layout_path) : Renderer
     {
         if (!file_exists($layout_path)) {
             throw new RuntimeException('Could not find the requested view');
@@ -62,13 +75,37 @@ class Renderer
     }
 
     /**
+     * @param array $values The values that are transformed into variables 
+     * inside the views
+     * 
+     * @return Renderer
+     */
+    public function values(array $values) : Renderer
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
+    /**
      * Allows to require the given layout that will then render the view 
      * registered inside the Renderer object
      * 
      * @return Renderer
      */
-    public function render()
+    public function render() : Renderer
     {
+        // We do this at the last moment as to not create global variables
+        // before we want to display a view
+        global $values;
+        $values = $this->values;
+
+        // Note: This will overwrite any existing global variables
+        foreach($values as $key => $value) {
+            global $$key;
+            $$key = $value;
+        }
+
         require($this->layout_path);
 
         return $this;

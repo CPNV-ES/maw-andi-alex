@@ -23,13 +23,29 @@ class Router
     /**
      * @param string $method        The HTTP method (GET, POST, ...)
      * @param string $path          The path that will trigger the callback. 
-     *                              Can contain a regex
+     *                              ex: /users/:id/profile/
      * @param callable $callback    The callback that will be called if the 
      *                              path is matched
+     * 
+     * TODO(alexandre): The route path to regex transformation should be done 
+     * inside the route class
      */
     private function register(string $method, string $path, callable $callback)
     {
-        $this->routes[] = new Route($method, $path, $callback);
+        // Replace the route parameters ":name" with regexes to match against
+        // incoming requests.
+        $regexed_path = preg_replace('/:[a-zA-Z]*/', '([a-zA-Z0-9]+)*', $path);
+        // Escape the regex in order to not match the literal "/" character
+        $regexed_path = str_replace("/", "\/", $regexed_path);
+
+        // Match the regex on the given path to extract the parameters name.
+        // This allows us to retrieve the values later as the path registered on
+        // the route was changed to contain regexes where the parameters are.
+        preg_match_all('/:([a-zA-Z]*)/', $path, $matches);
+
+        $route = new Route($method, $regexed_path, $callback);
+        $route->parameters = $matches[1];
+        $this->routes[] = $route;
     }
 
     /**
@@ -71,22 +87,50 @@ class Router
         }
 
         foreach ($this->routes as $route) {
-            preg_match_all('#^' . $route->path . '$#', $request_uri, $matches, PREG_OFFSET_CAPTURE);
+            preg_match_all('#^' . $route->path . '$#', $request_uri, $matches);
 
             foreach ($matches as $match) {
-                if ($match) {
-                    ($route->callback)();
-                    // We don't want to match more than once    
+                if ($match && $_SERVER['REQUEST_METHOD'] == $route->method) {
+                    // NOTE: The $request_uri has no GET parameters, this means we cannot 
+                    // use the ":name" syntax in GET parameters.
+                    $params = $this->extract_params($route, $request_uri);
+
+                    ($route->callback)($params);
+                    // We don't want to match on more than one route.
                     break;
                 }
             }
-
-            // If we have a match on the route, we don't want to execute other
-            // route callbacks.
-            if ($matches[0]) {
-                break;
-            }
         }
+    }
+
+    /**
+     * @param Route $route          The route on which we want to extract 
+     *                              parameters
+     * @param string $request_uri   The server REQUEST_URI without GET 
+     *                              parameters
+     * 
+     * @return array    The route parameters ex: ["id" => 123]
+     * 
+     * NOTE: Float values are cast into int
+     */
+    private function extract_params($route, $request_uri) : array {
+        $parameters = [];
+        preg_match_all('#' . $route->path . '#', $request_uri, $matches);
+
+        // Map the route parameters name with the value we retrieved.
+        // Skip the first index as it contains the full match.
+        $length = count($matches);
+        for ($i = 1; $i < $length; $i++) {
+            $value = $matches[$i][0];
+            
+            if (is_numeric($value)) {
+                $value = (int) $value;
+            }
+
+            $parameters[$route->parameters[$i-1]] = $value;
+        }
+
+        return $parameters;
     }
 }
 
@@ -98,29 +142,39 @@ class Route
 
     /**
      * The HTTP method (GET, POST, etc...)
-     * @access private
      * @var string
      */
     public $method;
 
     /**
      * The path that will trigger the callback. Can contain a regex
-     * @access private
      * @var string
      */
     public $path;
 
     /**
      * The callback called when the path is matched
-     * @access private
-     * @var [type]
+     * @var callable
      */
     public $callback;
 
+    /**
+     * Contains the 
+     * @var array
+     */
+    public $parameters;
+
+    /**
+     * @param string $method        The HTTP method (GET, POST, etc...)
+     * @param string $path          The path that will trigger the callback. 
+     *                              Can contain a regex
+     * @param callable $callback    The callback called when the path is matched
+     */
     public function __construct(string $method, string $path, callable $callback)
     {
-        $this->$method = $method;
+        $this->method = $method;
         $this->path = $path;
         $this->callback = $callback;
+        $this->parameters = [];
     }
 }
