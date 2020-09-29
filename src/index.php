@@ -70,7 +70,11 @@ $router->get('/exercises', function () use ($renderer) {
 
 // Take an Exercise Page
 $router->get('/exercises/answering', function () use ($renderer) {
-    $renderer->view('views/exercises_answering.php')->render();
+    require_once 'models/exercise.php';
+
+    $exercises = Exercise::select()->where('state', 'answering')->execute();
+
+    $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
 
 // Edit fields page
