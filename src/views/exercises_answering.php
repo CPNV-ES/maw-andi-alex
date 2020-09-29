@@ -8,7 +8,7 @@
         <?php foreach($exercises as $exercise): ?>
         <div class="exercise-card">
             <div class="exercise-title"><?= $exercise->title ?></div>
-            <a href="exercises/<?= $exercise->id ?>/fulfillments/new" class="button button-purple">Take it</a>
+            <a href="<?= $exercise->id ?>/fulfillments/new" class="button button-purple">Take it</a>
         </div>
         <?php endforeach; ?>
     </div>
