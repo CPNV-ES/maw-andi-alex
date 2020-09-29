@@ -77,11 +77,12 @@ $router->get('/exercises/:id/delete', function ($params) {
     require_once 'models/exercise.php';
 
     if (is_int($params['id'])) {
-        // TODO: Only allow deletion of exercises that are in "building" or
-        // "closed" state
-        Exercise::delete()->where('id', $params['id'])->execute();
+        Exercise::delete()->where('id', $params['id'])->where_or([
+            ['state', 'building'],
+            ['state', 'closed'],
+        ])->execute();
     }
-    
+
     header('Location: /exercises');
     exit;
 });
