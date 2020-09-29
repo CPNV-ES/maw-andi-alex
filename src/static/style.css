@@ -16,6 +16,26 @@ h1 {
     margin: 0.5em 0;
 }
 
+input[type="text"],
+textarea {
+    padding: 0.6em 0.8em;
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+textarea{
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 3em;
+}
+
+label {
+    font-size: 1.5em;
+    display: block;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -123,6 +143,15 @@ table a {
 
 .button-green:hover {
     background-color: rgb(22, 121, 22);
+}
+
+.form > * {
+    margin: 0.5em 0;
+}
+
+.form > input[type="text"] {
+    display: block;
+    width: 100%;
 }
 
 .form > * {

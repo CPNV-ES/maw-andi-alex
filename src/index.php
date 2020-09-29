@@ -90,4 +90,15 @@ $router->get('/exercises/:id/delete', function ($params) {
     exit;
 });
 
+// Fulfill an Exercise page
+$router->get('/exercises/:id/fulfillments/new', function ($params) use ($renderer) {
+  require_once 'models/question.php';
+
+  if (is_int($params['id'])) {
+    $questions = Question::select()->where('exercises_id', $params['id'])->execute();
+  }
+
+  $renderer->view('views/fulfillments_new.php')->values(['questions' => $questions])->render();
+});
+
 $router->execute();
