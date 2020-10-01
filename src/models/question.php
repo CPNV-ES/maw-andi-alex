@@ -10,6 +10,13 @@ class Question extends Model
 
     public static $primary_key = 'id';
 
+    public static $fields = [
+        'id',
+        'label',
+        'type',
+        'exercises_id',
+    ];
+
     protected static function has_one() {
         return [
             Exercise::class
