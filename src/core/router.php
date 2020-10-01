@@ -21,6 +21,16 @@ class Router
     }
 
     /**
+     * @param string $path 
+     */
+    public static function redirect($path)
+    {
+        http_response_code(302);
+
+        header("Location: $path");
+    }
+
+    /**
      * @param string $method        The HTTP method (GET, POST, ...)
      * @param string $path          The path that will trigger the callback. 
      *                              ex: /users/:id/profile/
