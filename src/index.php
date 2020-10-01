@@ -92,7 +92,7 @@ $router->get('/exercises/:id/fields', function ($params) use ($renderer) {
         ->join(Question::class)->execute();
 
     $renderer->view('views/exercises_fields.php')->values([
-        'exercise' => $exercise,
+        'exercise' => $exercise[0],
     ])->render();
 });
 

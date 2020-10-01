@@ -17,9 +17,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach($exercise->questions as $field): ?>
                     <tr>
-                        <td>Label of the field</td>
-                        <td>single_line</td>
+                        <td><?= $field->label ?></td>
+                        <td><?= $field->type ?></td>
                         <td>
                             <a href="/exercises/<?= $exercise->id ?>/fields/<?= $field->id ?>/edit" class="icon-button">
                                 <img src="/static/edit.svg" alt="Manage fields">
@@ -29,6 +30,7 @@
                             </a>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
             <a href="/exercises/<?= $exercise->id ?>/status/answering" class="button button-purple"><img class="button-img" src="/static/chat.svg">Complete and be ready for answers</a>
