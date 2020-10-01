@@ -2,15 +2,15 @@
     <a href="/">
         <img src="/static/logo.png" class="logo" alt="logo">
     </a>
-    <p class="header-context"><span>Exercise: </span><span><?= "..." // Display exercice name ?></span></p>
+    <p class="header-context"><span>Exercise: </span><span><?= $exercise->title // Display exercice name ?></span></p>
 </header>
 <div class="content">
 
     <h1>Your take</h1>
     <p>If you'd like to come back later to finish, simply submit with blanks</p>
-    <form class="form" action="#" method="POST">
+    <form class="form" action="edit" method="POST">
 
-        <?php foreach($questions as $question): // Display every quetion ?>
+        <?php foreach($exercise->questions as $question): // Display every quetion ?>
             <!-- Label for every input -->
             <label for="fulfillment_answers_<?= $question->type . "_" . $question->id ?>"><?= $question->label ?></label>
 
@@ -27,7 +27,7 @@
             <?php endswitch; ?>
         <?php endforeach; ?>
 
-        <?php if ($questions != null): // Display the submit button if there is question on the page ?>
+        <?php if ($exercise->questions != null): // Display the submit button if there is question on the page ?>
             <input class="button button-purple" type="submit" value="Save">
         <?php endif; ?>
     </form>

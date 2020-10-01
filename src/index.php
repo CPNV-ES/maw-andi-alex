@@ -144,13 +144,18 @@ $router->get('/exercises/:id/status/closed', function ($params) {
 
 // Fulfill an Exercise page
 $router->get('/exercises/:id/fulfillments/new', function ($params) use ($renderer) {
-  require_once 'models/question.php';
+    require_once 'models/question.php';
 
-  if (is_int($params['id'])) {
-    $questions = Question::select()->where('exercises_id', $params['id'])->execute();
-  }
+    // if (is_int($params['id'])) {
+    //     $questions = Question::select()->where('exercises_id', $params['id'])->execute();
+    // }
 
-  $renderer->view('views/fulfillments_new.php')->values(['questions' => $questions])->render();
+    if (is_int($params['id'])) {
+        $exercise = Exercise::select()->where('exercises.id', $params['id'])
+        ->join(Question::class)->execute()[0];
+    }
+
+    $renderer->view('views/fulfillments_new.php')->values(['exercise' => $exercise])->render();
 });
 
 $router->execute();
