@@ -5,11 +5,11 @@ require '../vendor/autoload.php';
 require 'core/router.php';
 require 'core/renderer.php';
 
-use Expreql\Expreql\Model;
+use Expreql\Expreql\Database;
 
 $config = parse_ini_file('config.ini');
 
-Model::set_config($config);
+Database::set_config($config);
 $router = new Router();
 $renderer = Renderer::get_instance();
 
@@ -77,15 +77,67 @@ $router->get('/exercises/answering', function () use ($renderer) {
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
 
+// Edit fields page
+$router->get('/exercises/:id/fields', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/question.php';
+
+    if (!is_int($params['id'])) {
+        // Redirect on index by default
+        header('Location: /');
+        exit;
+    };
+
+    $exercise = Exercise::select()->where('exercises.id', $params['id'])
+        ->join(Question::class)->execute();
+
+    $renderer->view('views/exercises_fields.php')->values([
+        'exercise' => $exercise[0],
+    ])->render();
+});
+
 $router->get('/exercises/:id/delete', function ($params) {
     require_once 'models/exercise.php';
 
     if (is_int($params['id'])) {
-        // TODO: Only allow deletion of exercises that are in "building" or
-        // "closed" state
-        Exercise::delete()->where('id', $params['id'])->execute();
+        Exercise::delete()->where('id', $params['id'])->where_or([
+            ['state', 'building'],
+            ['state', 'closed'],
+        ])->execute();
     }
-    
+
+    header('Location: /exercises');
+    exit;
+});
+
+$router->get('/exercises/:id/status/answering', function ($params) {
+    require_once 'models/exercise.php';
+
+    if (is_int($params['id'])) {
+        Exercise::update([
+            'state' => 'answering'
+        ])->where([
+            ['id', $params['id']],
+            ['state', 'building']
+        ])->execute();
+    }
+
+    header('Location: /exercises');
+    exit;
+});
+
+$router->get('/exercises/:id/status/closed', function ($params) {
+    require_once 'models/exercise.php';
+
+    if (is_int($params['id'])) {
+        Exercise::update([
+            'state' => 'closed'
+        ])->where([
+            ['id', $params['id']],
+            ['state', 'answering']
+        ])->execute();
+    }
+
     header('Location: /exercises');
     exit;
 });

@@ -17,7 +17,8 @@ h1 {
 }
 
 input[type="text"],
-textarea {
+textarea,
+select {
     padding: 0.6em 0.8em;
     display: block;
     width: 100%;
@@ -31,6 +32,20 @@ textarea{
     min-height: 3em;
 }
 
+select {
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    appearance:none;
+    background: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #9b4dca;
+    outline: 0;
+}
+
 label {
     font-size: 1.5em;
     display: block;
@@ -39,6 +54,7 @@ label {
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 1em;
 }
 
 th, td {
@@ -57,6 +73,10 @@ th, tr  {
 
 table a {
     text-decoration: none;
+}
+
+thead > tr {
+    font-weight: bold;
 }
 
 .header {
@@ -145,6 +165,11 @@ table a {
     background-color: rgb(22, 121, 22);
 }
 
+.button-img {
+    vertical-align: middle;
+    margin-right: 0.4em;
+}
+
 .form > * {
     margin: 0.5em 0;
 }
@@ -187,12 +212,19 @@ table a {
     display: block;
 }
 
-.exercise-categories {
+.exercise-categories,
+.exercise-fields {
     display: flex;
     flex: 1 0;
 }
 
 .exercise-categories > * {
     width: calc(100% / 3);
+    padding: 0 0.5em;
+}
+
+
+.exercise-fields > * {
+    width: 50%;
     padding: 0 0.5em;
 }

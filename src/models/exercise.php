@@ -10,7 +10,14 @@ class Exercise extends Model
 
     public static $primary_key = 'id';
 
-      protected static function has_many() {
+    public static $fields = [
+        'id',
+        'title',
+        'state',
+    ];
+
+    protected static function has_many()
+    {
         return [
             Question::class => 'exercises_id'
         ];
