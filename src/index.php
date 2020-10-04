@@ -43,11 +43,12 @@ $router->get('/exercises', function () use ($renderer) {
     require_once 'models/question.php';
 
     $building_exercises = Exercise::select([
-        'id',
+        Exercise::field('id'),
         'title',
         'state',
-        ['count', 'exercises_id', 'nb_questions']
-    ])->join(Question::class)->where('state', 'building')->group_by('exercises.id')->execute();
+        Question::field('id'),
+        'exercises_id',
+    ])->join(Question::class)->where('state', 'building')->execute();
 
     $answering_exercises = Exercise::select([
         'id',

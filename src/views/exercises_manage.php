@@ -18,7 +18,7 @@
                         <tr>
                             <td><?= $exercise->title ?></td>
                             <td>
-                                <?php if ($exercise->nb_questions > 0) : ?>
+                                <?php if ($exercise->questions->count() > 0) : ?>
                                     <a href="/exercises/<?= $exercise->id ?>/status/answering" class="icon-button">
                                         <img src="/static/check.svg" alt="Be ready for answers">
                                     </a>
