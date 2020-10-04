@@ -193,4 +193,19 @@ $router->get('/exercises/:exercise_id/fields/:field_id/delete', function ($param
     Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
 });
 
+$router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
+    require_once 'models/question.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
+        Router::redirect('/');
+    }
+
+    Question::update([
+        'label' => $_POST['label'],
+        'type' => $_POST['type'],
+    ])->where('id', $params['field_id'])->execute();
+
+    Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
+});
+
 $router->execute();
