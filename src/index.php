@@ -78,6 +78,23 @@ $router->get('/exercises/answering', function () use ($renderer) {
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
 
+// Editing field
+$router->get('/exercises/:exercise_id/fields/:field_id/edit', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
+        Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
+    }
+
+    $exercise = Exercise::select()->where('id', $params['exercise_id'])->execute();
+    $field = Question::select()->where('id', $params['field_id'])->execute();
+
+    $renderer->view('views/edit_field.php')->values([
+        'exercise' => $exercise[0],
+        'field' => $field[0],
+    ])->render();
+});
+
 // Edit fields page
 $router->get('/exercises/:id/fields', function ($params) use ($renderer) {
     require_once 'models/exercise.php';
@@ -165,13 +182,28 @@ $router->get('/exercises/:exercise_id/fields/:field_id/delete', function ($param
     require_once 'models/question.php';
 
     if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
-        Router::redirect('/exercises/' . $params['id'] . '/fields');
+        Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
     }
 
     Question::delete()->where([
         ['id', $params['field_id']],
         ['exercises_id', $params['exercise_id']],
     ])->execute();
+
+    Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
+});
+
+$router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
+    require_once 'models/question.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
+        Router::redirect('/');
+    }
+
+    Question::update([
+        'label' => $_POST['label'],
+        'type' => $_POST['type'],
+    ])->where('id', $params['field_id'])->execute();
 
     Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
 });
