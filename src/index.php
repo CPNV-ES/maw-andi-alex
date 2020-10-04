@@ -87,9 +87,11 @@ $router->get('/exercises/:exercise_id/fields/:field_id/edit', function ($params)
     }
 
     $exercise = Exercise::select()->where('id', $params['exercise_id'])->execute();
+    $field = Question::select()->where('id', $params['field_id'])->execute();
 
     $renderer->view('views/edit_field.php')->values([
         'exercise' => $exercise[0],
+        'field' => $field[0],
     ])->render();
 });
 
