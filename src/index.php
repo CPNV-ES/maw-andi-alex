@@ -79,8 +79,18 @@ $router->get('/exercises/answering', function () use ($renderer) {
 });
 
 // Editing field
-$router->get('/exercises/:exercise_id/fields/:field_id/edit', function () use ($renderer) {
-    $renderer->view('views/edit_field.php')->render();
+$router->get('/exercises/:exercise_id/fields/:field_id/edit', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
+        Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
+    }
+
+    $exercise = Exercise::select()->where('id', $params['exercise_id'])->execute();
+
+    $renderer->view('views/edit_field.php')->values([
+        'exercise' => $exercise[0],
+    ])->render();
 });
 
 // Edit fields page
@@ -170,7 +180,7 @@ $router->get('/exercises/:exercise_id/fields/:field_id/delete', function ($param
     require_once 'models/question.php';
 
     if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
-        Router::redirect('/exercises/' . $params['id'] . '/fields');
+        Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
     }
 
     Question::delete()->where([
