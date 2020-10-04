@@ -12,7 +12,7 @@ $renderer = Renderer::get_instance();
 
 <body>
     <div class="container">
-        <?php require($renderer->view_path); ?>
+        <?php include($renderer->view_path); ?>
     </div>
 </body>
 

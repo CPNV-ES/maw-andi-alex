@@ -95,18 +95,14 @@ class Renderer
      */
     public function render() : Renderer
     {
-        // We do this at the last moment as to not create global variables
-        // before we want to display a view
-        global $values;
-        $values = $this->values;
-
-        // Note: This will overwrite any existing global variables
-        foreach($values as $key => $value) {
-            global $$key;
+        // Register the variables set in values to the current scope
+        foreach($this->values as $key => $value) {
             $$key = $value;
         }
 
-        require($this->layout_path);
+        // Inherit the variable scope to allow the layout and view to access
+        // variables set with $this->values
+        include($this->layout_path);
 
         return $this;
     }

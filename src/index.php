@@ -43,11 +43,12 @@ $router->get('/exercises', function () use ($renderer) {
     require_once 'models/question.php';
 
     $building_exercises = Exercise::select([
-        'id',
+        Exercise::field('id'),
         'title',
         'state',
-        ['count', 'exercises_id', 'nb_questions']
-    ])->join(Question::class)->where('state', 'building')->group_by('exercises.id')->execute();
+        Question::field('id'),
+        'exercises_id',
+    ])->join(Question::class)->where('state', 'building')->execute();
 
     $answering_exercises = Exercise::select([
         'id',
@@ -92,7 +93,7 @@ $router->get('/exercises/:id/fields', function ($params) use ($renderer) {
         ->join(Question::class)->execute();
 
     $renderer->view('views/exercises_fields.php')->values([
-        'exercise' => $exercise,
+        'exercise' => $exercise[0],
     ])->render();
 });
 
@@ -140,6 +141,39 @@ $router->get('/exercises/:id/status/closed', function ($params) {
 
     header('Location: /exercises');
     exit;
+});
+
+$router->post('/exercises/:id/fields', function ($params) use ($router) {
+    require_once 'models/question.php';
+
+    if (!is_int($params['id']) || !isset($_POST['label']) || !isset($_POST['type'])) {
+        // We have unset variables, redirect to fields page
+        header('Location: /exercises/' . $params['id'] . '/fields');
+        exit;
+    }
+
+    Question::insert([
+        'label' => $_POST['label'],
+        'type' => $_POST['type'],
+        'exercises_id' => $params['id'],
+    ]);
+
+    Router::redirect('/exercises/' . $params['id'] . '/fields');
+});
+
+$router->get('/exercises/:exercise_id/fields/:field_id/delete', function ($params) {
+    require_once 'models/question.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
+        Router::redirect('/exercises/' . $params['id'] . '/fields');
+    }
+
+    Question::delete()->where([
+        ['id', $params['field_id']],
+        ['exercises_id', $params['exercise_id']],
+    ])->execute();
+
+    Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
 });
 
 $router->execute();
