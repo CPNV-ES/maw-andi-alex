@@ -17,7 +17,7 @@ class Question extends Model
         'exercises_id',
     ];
 
-    protected static function has_one() {
+    public static function has_one() {
         return [
             Exercise::class
         ];

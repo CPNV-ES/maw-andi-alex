@@ -16,7 +16,7 @@ class Exercise extends Model
         'state',
     ];
 
-    protected static function has_many()
+    public static function has_many()
     {
         return [
             Question::class => 'exercises_id'
