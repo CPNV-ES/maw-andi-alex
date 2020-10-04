@@ -78,6 +78,11 @@ $router->get('/exercises/answering', function () use ($renderer) {
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
 
+// Editing field
+$router->get('/exercises/:exercise_id/fields/:field_id/edit', function () use ($renderer) {
+    $renderer->view('views/edit_field.php')->render();
+});
+
 // Edit fields page
 $router->get('/exercises/:id/fields', function ($params) use ($renderer) {
     require_once 'models/exercise.php';
