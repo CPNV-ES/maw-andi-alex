@@ -223,8 +223,10 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
 
 $router->get('/exercises/:id/results', function ($params) use ($renderer) {
     require_once 'models/exercise.php';
+    require_once 'models/fulfillment.php';
 
-    $exercise = Exercise::select()->where('id', $params['id'])->execute();
+    $exercise = Exercise::select()->where('id', $params['id'])
+        ->join(Fulfillment::class)->execute();
 
     $renderer->view('views/exercise_results.php')->values([
         'exercise' => $exercise[0],
