@@ -219,3 +219,15 @@ thead > tr {
     width: 50%;
     padding: 0 0.5em;
 }
+
+.exercise-results thead th:not(:first-child) {
+    color: #9b4dca;
+}
+
+.exercise-results tbody td:first-child {
+    color: #9b4dca;
+}
+
+.exercise-results tbody td {
+    text-align: start;
+}
