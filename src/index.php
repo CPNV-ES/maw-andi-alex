@@ -221,4 +221,14 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
     ->values(['exercise' => $exercise])->render();
 });
 
+$router->get('/exercises/:id/results', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+
+    $exercise = Exercise::select()->where('id', $params['id'])->execute();
+
+    $renderer->view('views/exercise_results.php')->values([
+        'exercise' => $exercise[0],
+    ])->render();
+});
+
 $router->execute();
