@@ -17,12 +17,19 @@ h1 {
 }
 
 input[type="text"],
+textarea,
 select {
     padding: 0.6em 0.8em;
     display: block;
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 8px;
+}
+
+textarea{
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 3em;
 }
 
 select {
@@ -120,7 +127,7 @@ thead > tr {
 }
 
 .button:focus {
-   outline: 1px solid black;
+    outline: 1px solid black;
 }
 
 .icon-button {
@@ -128,7 +135,7 @@ thead > tr {
 }
 
 .icon-button:hover {
-   fill: rgb(99, 23, 99);
+    fill: rgb(99, 23, 99);
 }
 
 .button-purple {

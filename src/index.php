@@ -208,4 +208,17 @@ $router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
     Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
 });
 
+// Fulfill an Exercise page
+$router->get('/exercises/:id/fulfillments/new', function ($params) use ($renderer) {
+    require_once 'models/question.php';
+
+    if (is_int($params['id'])) {
+        $exercise = Exercise::select()->where('exercises.id', $params['id'])
+        ->join(Question::class)->execute()[0];
+    }
+
+    $renderer->view('views/fulfillments_new.php')
+    ->values(['exercise' => $exercise])->render();
+});
+
 $router->execute();
