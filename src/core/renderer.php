@@ -20,7 +20,7 @@ class Renderer
     /**
      * @var array The values that are transformed into variables inside the views
      */
-    private $values;
+    private $values = [];
 
     private function __construct()
     {

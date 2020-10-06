@@ -73,7 +73,8 @@ $router->get('/exercises', function () use ($renderer) {
 $router->get('/exercises/answering', function () use ($renderer) {
     require_once 'models/exercise.php';
 
-    $exercises = Exercise::select()->where('state', 'answering')->execute();
+    $exercises = Exercise::select()->where('state', 'answering')
+    ->join(Question::class)->execute();
 
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
@@ -206,6 +207,63 @@ $router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
     ])->where('id', $params['field_id'])->execute();
 
     Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
+});
+
+// Fulfill an Exercise page
+$router->get('/exercises/:id/fulfillments/new', function ($params) use ($renderer) {
+    require_once 'models/question.php';
+
+    if (!is_int($params['id'])) {
+        Router::redirect('/');
+    }
+
+    $exercise = Exercise::select()->where('exercises.id', $params['id'])
+    ->join(Question::class)->execute()[0];
+
+    // Redirect to home if no questions in exercise
+    if ($exercise->questions->count() == 0) {
+        Router::redirect('/');
+    }
+
+    $renderer->view('views/fulfillments_new.php')
+    ->values(['exercise' => $exercise])->render();
+});
+
+$router->get('/exercises/:id/results', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/fulfillment.php';
+
+    $exercise = Exercise::select()->where(Exercise::field('id'), $params['id'])
+        ->join(Fulfillment::class)->execute();
+
+    $renderer->view('views/exercise_results.php')->values([
+        'exercise' => $exercise[0],
+    ])->render();
+});
+
+// Create a new fulfillment with answers
+$router->post('/exercises/:id/fulfillments/new', function($params) {
+    require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
+
+    if (!is_int($params['id'])) {
+        Router::redirect('/');
+    }
+
+    $fulfillment = Fulfillment::insert([
+        'timestamp' => date("Y-m-d H:i:s"),
+        'exercises_id' => $params['id'],
+    ]);
+
+    foreach ($_POST['questions'] as $key => $value){
+        Response::insert([
+            'text' => $value,
+            'questions_id' => $key,
+            'fulfillments_id' => $fulfillment[0]->id,
+        ]);
+    }
+
+     Router::redirect('/exercises/' . $params['id'] . '/fulfillments/'. $fulfillment[0]->id . '/edit');
 });
 
 $router->execute();

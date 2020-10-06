@@ -16,10 +16,8 @@ class Exercise extends Model
         'state',
     ];
 
-    public static function has_many()
-    {
-        return [
-            Question::class => 'exercises_id'
-        ];
-    }
+    public static $has_many = [
+        Question::class => 'exercises_id',
+        Fulfillment::class => 'exercises_id'
+    ];
 }

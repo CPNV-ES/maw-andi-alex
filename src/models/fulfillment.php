@@ -4,17 +4,15 @@ use Expreql\Expreql\Model;
 
 require_once 'models/exercise.php';
 
-class Question extends Model
+class Fulfillment extends Model
 {
-    public static $table = 'questions';
+    public static $table = 'fulfillments';
 
     public static $primary_key = 'id';
 
     public static $fields = [
         'id',
-        'label',
-        'type',
-        'exercises_id',
+        'timestamp',
     ];
 
     public static $has_one = [
