@@ -11,10 +11,12 @@
             <th>question label</th>
         </thead>
         <tbody>
-            <tr>
-                <td>timestamp</td>
-                <td>check</td>
-            </tr>
+            <?php foreach ($exercise->fulfillments as $fulfillment) : ?>
+                <tr>
+                    <td><?= $fulfillment->timestamp ?></td>
+                    <td>check</td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>
