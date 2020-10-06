@@ -73,7 +73,8 @@ $router->get('/exercises', function () use ($renderer) {
 $router->get('/exercises/answering', function () use ($renderer) {
     require_once 'models/exercise.php';
 
-    $exercises = Exercise::select()->where('state', 'answering')->execute();
+    $exercises = Exercise::select()->where('state', 'answering')
+    ->join(Question::class)->execute();
 
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
@@ -215,6 +216,11 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
     if (is_int($params['id'])) {
         $exercise = Exercise::select()->where('exercises.id', $params['id'])
         ->join(Question::class)->execute()[0];
+    }
+
+    // Redirect to home if no questions in exercise
+    if ($exercise->questions->count() == 0) {
+        Router::redirect('/');
     }
 
     $renderer->view('views/fulfillments_new.php')

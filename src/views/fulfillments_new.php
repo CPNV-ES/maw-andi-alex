@@ -27,7 +27,7 @@
             <?php endswitch; ?>
         <?php endforeach; ?>
 
-        <?php if ($exercise->questions != null): // Display the submit button if there is question on the page ?>
+        <?php if ($exercise->questions->count() > 0): // Display the submit button if there is question on the page ?>
             <input class="button button-purple" type="submit" value="Save">
         <?php endif; ?>
     </form>
