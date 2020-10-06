@@ -15,13 +15,13 @@
             <label for="fulfillment_answers_<?= $question->type . "_" . $question->id ?>"><?= $question->label ?></label>
 
             <?php switch ($question->type): case "single_line": // Display input if "single_line" ?>
-            <input id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" type="text" name="<?= $question->type . "_" . $question->id ?>" value="">
+            <input id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" type="text" name="questions[<?= $question->id ?>]" value="">
 
             <?php break; case "single_line_list": case "multi_line": // Display textarea if "single_line_list" or "multi_line" ?>
-            <textarea id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" name="<?= $question->type . "_" . $question->id ?>" value="" cols="30" rows="3"></textarea>
+            <textarea id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" name="questions[<?= $question->id ?>]" value="" cols="30" rows="3"></textarea>
 
             <?php break; default: // Default display the same input for "single_line" ?>
-            <input id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" type="text" name="<?= $question->type . "_" . $question->id ?>" value="">
+            <input id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" type="text" name="questions[<?= $question->id ?>]" value="">
             <?php break; ?>
 
             <?php endswitch; ?>
