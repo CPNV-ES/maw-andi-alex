@@ -17,10 +17,7 @@ class Question extends Model
         'exercises_id',
     ];
 
-    public static function has_one() {
-        return [
-            Exercise::class
-        ];
-    }
-
+    public static $has_one = [
+        Exercise::class => 'exercises_id'
+    ];
 }

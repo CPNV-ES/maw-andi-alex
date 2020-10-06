@@ -6,7 +6,7 @@ require_once 'models/exercise.php';
 
 class Fulfillment extends Model
 {
-    public static $table = 'exercises';
+    public static $table = 'fulfillments';
 
     public static $primary_key = 'id';
 
@@ -15,10 +15,7 @@ class Fulfillment extends Model
         'timestamp',
     ];
 
-    public static function has_one()
-    {
-        return [
-            Exercise::class => 'exercises_id'
-        ];
-    }
+    public static $has_one = [
+        Exercise::class => 'exercises_id'
+    ];
 }
