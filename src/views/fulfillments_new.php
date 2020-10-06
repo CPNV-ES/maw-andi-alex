@@ -8,7 +8,7 @@
 
     <h1>Your take</h1>
     <p>If you'd like to come back later to finish, simply submit with blanks</p>
-    <form class="form" action="edit" method="POST">
+    <form class="form" action="new" method="POST">
 
         <?php foreach($exercise->questions as $question): // Display every quetion ?>
             <!-- Label for every input -->
