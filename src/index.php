@@ -213,10 +213,12 @@ $router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
 $router->get('/exercises/:id/fulfillments/new', function ($params) use ($renderer) {
     require_once 'models/question.php';
 
-    if (is_int($params['id'])) {
-        $exercise = Exercise::select()->where('exercises.id', $params['id'])
-        ->join(Question::class)->execute()[0];
+    if (!is_int($params['id'])) {
+        Router::redirect('/');
     }
+
+    $exercise = Exercise::select()->where('exercises.id', $params['id'])
+    ->join(Question::class)->execute()[0];
 
     // Redirect to home if no questions in exercise
     if ($exercise->questions->count() == 0) {
