@@ -239,4 +239,29 @@ $router->get('/exercises/:id/results', function ($params) use ($renderer) {
     ])->render();
 });
 
+// Create a new fulfillment with answers
+$router->post('/exercises/:id/fulfillments/new', function($params) {
+    require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
+
+    if (!is_int($params['id'])) {
+        Router::redirect('/');
+    }
+
+    $fulfillment = Fulfillment::insert([
+        'timestamp' => date("Y-m-d H:i:s"),
+        'exercises_id' => $params['id'],
+    ]);
+
+    foreach ($_POST['questions'] as $key => $value){
+        Response::insert([
+            'text' => $value,
+            'questions_id' => $key,
+            'fulfillments_id' => $fulfillment[0]->id,
+        ]);
+    }
+
+     Router::redirect('/exercises/' . $params['id'] . '/fulfillments/'. $fulfillment[0]->id . '/edit');
+});
+
 $router->execute();
