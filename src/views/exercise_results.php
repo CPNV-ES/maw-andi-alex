@@ -9,13 +9,21 @@
         <thead>
             <th>Take</th>
             <?php foreach ($exercise->questions as $question) : ?>
-                <th><?= $question->label ?></th>
+                <th>
+                    <a href="/exercises/<?= $exercise->id ?>/results/<?= $question->id ?>">
+                        <?= $question->label ?>
+                    </a>
+                </th>
             <?php endforeach; ?>
         </thead>
         <tbody>
             <?php foreach ($exercise->fulfillments as $fulfillment) : ?>
                 <tr>
-                    <td><?= $fulfillment->timestamp ?></td>
+                    <td>
+                        <a href="/exercises/<?= $exercise->id ?>/fulfillments/<?= $fulfillment->id ?>">
+                            <?= $fulfillment->timestamp ?>
+                        </a>
+                    </td>
                     <?php for ($response_index = 0; $response_index < $exercise->questions->count(); $response_index++) : ?>
                         <?php if (isset($fulfillment->responses[$response_index])) : ?>
                             <?php if (strlen($fulfillment->responses[$response_index]->text) >= 10) : ?>
