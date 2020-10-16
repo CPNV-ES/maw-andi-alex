@@ -74,7 +74,7 @@ $router->get('/exercises/answering', function () use ($renderer) {
     require_once 'models/exercise.php';
 
     $exercises = Exercise::select()->where('state', 'answering')
-    ->join(Question::class)->execute();
+        ->join(Question::class)->execute();
 
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
@@ -194,7 +194,7 @@ $router->get('/exercises/:exercise_id/fields/:field_id/delete', function ($param
     Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
 });
 
-$router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
+$router->post('/exercises/:exercise_id/fields/:field_id', function ($params) {
     require_once 'models/question.php';
 
     if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
@@ -218,7 +218,7 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
     }
 
     $exercise = Exercise::select()->where('exercises.id', $params['id'])
-    ->join(Question::class)->execute()[0];
+        ->join(Question::class)->execute()[0];
 
     // Redirect to home if no questions in exercise
     if ($exercise->questions->count() == 0) {
@@ -226,15 +226,21 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
     }
 
     $renderer->view('views/fulfillments_new.php')
-    ->values(['exercise' => $exercise])->render();
+        ->values(['exercise' => $exercise])->render();
 });
 
 $router->get('/exercises/:id/results', function ($params) use ($renderer) {
     require_once 'models/exercise.php';
     require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
 
     $exercise = Exercise::select()->where(Exercise::field('id'), $params['id'])
-        ->join(Fulfillment::class)->execute();
+        ->join([
+            Question::class,
+            Fulfillment::class => [
+                Response::class
+            ]
+        ])->execute();
 
     $renderer->view('views/exercise_results.php')->values([
         'exercise' => $exercise[0],
@@ -242,7 +248,7 @@ $router->get('/exercises/:id/results', function ($params) use ($renderer) {
 });
 
 // Create a new fulfillment with answers
-$router->post('/exercises/:id/fulfillments/new', function($params) {
+$router->post('/exercises/:id/fulfillments/new', function ($params) {
     require_once 'models/fulfillment.php';
     require_once 'models/response.php';
 
@@ -255,7 +261,7 @@ $router->post('/exercises/:id/fulfillments/new', function($params) {
         'exercises_id' => $params['id'],
     ]);
 
-    foreach ($_POST['questions'] as $key => $value){
+    foreach ($_POST['questions'] as $key => $value) {
         Response::insert([
             'text' => $value,
             'questions_id' => $key,
@@ -263,7 +269,7 @@ $router->post('/exercises/:id/fulfillments/new', function($params) {
         ]);
     }
 
-     Router::redirect('/exercises/' . $params['id'] . '/fulfillments/'. $fulfillment[0]->id . '/edit');
+    Router::redirect('/exercises/' . $params['id'] . '/fulfillments/' . $fulfillment[0]->id . '/edit');
 });
 
 $router->execute();
