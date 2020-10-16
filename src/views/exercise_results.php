@@ -18,10 +18,14 @@
                     <td><?= $fulfillment->timestamp ?></td>
                     <?php for ($response_index = 0; $response_index < $exercise->questions->count(); $response_index++) : ?>
                         <?php if (isset($fulfillment->responses[$response_index])) : ?>
-                            <td>check</td>
+                            <?php if (strlen($fulfillment->responses[$response_index]->text) >= 10) : ?>
+                                <td><img src="/static/double_check.svg" alt=""></td>
+                            <?php else : ?>
+                                <td><img src="/static/check.svg" alt=""></td>
+                            <?php endif; ?>
                         <?php else : ?>
-                            <td>not check</td>
-                        <?php endif;?>
+                            <td><img src="/static/close.svg" alt=""></td>
+                        <?php endif; ?>
                     <?php endfor; ?>
                 </tr>
             <?php endforeach; ?>
