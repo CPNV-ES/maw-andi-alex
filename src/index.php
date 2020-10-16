@@ -193,7 +193,7 @@ $router->get('/exercises/:exercise_id/fields/:field_id/delete', function ($param
     Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
 });
 
-$router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
+$router->post('/exercises/:exercise_id/fields/:field_id', function ($params) {
     require_once 'models/question.php';
 
     if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
@@ -214,19 +214,25 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
 
     if (is_int($params['id'])) {
         $exercise = Exercise::select()->where('exercises.id', $params['id'])
-        ->join(Question::class)->execute()[0];
+            ->join(Question::class)->execute()[0];
     }
 
     $renderer->view('views/fulfillments_new.php')
-    ->values(['exercise' => $exercise])->render();
+        ->values(['exercise' => $exercise])->render();
 });
 
 $router->get('/exercises/:id/results', function ($params) use ($renderer) {
     require_once 'models/exercise.php';
     require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
 
     $exercise = Exercise::select()->where(Exercise::field('id'), $params['id'])
-        ->join(Fulfillment::class)->execute();
+        ->join([
+            Question::class,
+            Fulfillment::class => [
+                Response::class
+            ]
+        ])->execute();
 
     $renderer->view('views/exercise_results.php')->values([
         'exercise' => $exercise[0],

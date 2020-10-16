@@ -8,13 +8,21 @@
     <table class="exercise-results">
         <thead>
             <th>Take</th>
-            <th>question label</th>
+            <?php foreach ($exercise->questions as $question) : ?>
+                <th><?= $question->label ?></th>
+            <?php endforeach; ?>
         </thead>
         <tbody>
             <?php foreach ($exercise->fulfillments as $fulfillment) : ?>
                 <tr>
                     <td><?= $fulfillment->timestamp ?></td>
-                    <td>check</td>
+                    <?php for ($response_index = 0; $response_index < $exercise->questions->count(); $response_index++) : ?>
+                        <?php if (isset($fulfillment->responses[$response_index])) : ?>
+                            <td>check</td>
+                        <?php else : ?>
+                            <td>not check</td>
+                        <?php endif;?>
+                    <?php endfor; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>
