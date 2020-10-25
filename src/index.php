@@ -314,4 +314,30 @@ $router->get('/exercises/:exercise_id/fulfillments/:fulfillment_id', function ($
     ])->render();
 });
 
+$router->get('/exercises/:exercise_id/results/:question_id', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/question.php';
+    require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['question_id'])) {
+        Router::redirect('/');
+    }
+
+    $exercise = Exercise::select()->join([
+        Question::class,
+        Fulfillment::class => [
+            Response::class,
+        ],
+    ])->where([
+        [Exercise::field('id'), $params['exercise_id']],
+        [Question::field('id', $params['question_id'])],
+    ])->execute();
+
+    $renderer->view('views/question_result.php')->values([
+        'exercise' => $exercise[0],
+        'question' => $exercise[0]->questions[0],
+    ])->render();
+});
+
 $router->execute();
