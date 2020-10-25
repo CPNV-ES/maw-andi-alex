@@ -16,6 +16,11 @@ h1 {
     margin: 0.5em 0;
 }
 
+dt {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
 input[type="text"],
 textarea,
 select {
