@@ -244,3 +244,7 @@ a:hover {
 .exercise-results tbody td {
     text-align: start;
 }
+
+table.question-result td {
+    text-align: left;
+}
