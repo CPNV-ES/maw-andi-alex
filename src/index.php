@@ -4,11 +4,13 @@ require '../vendor/autoload.php';
 
 require 'core/router.php';
 require 'core/renderer.php';
+require 'core/component.php';
 
 use Expreql\Expreql\Database;
 
 $config = parse_ini_file('config.ini');
 
+Component::set_path('components/');
 Database::set_config($config);
 $router = new Router();
 $renderer = Renderer::get_instance();
