@@ -107,7 +107,7 @@ class Router
 
                     ($route->callback)($params);
                     // We don't want to match on more than one route.
-                    break;
+                    return;
                 }
             }
         }
