@@ -1,6 +1,6 @@
 <?php
 
-class Component
+abstract class Component
 {
 
     /**
