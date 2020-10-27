@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header <?= $class ?>">
     <a href="/">
         <img src="/static/logo.png" class="logo" alt="logo">
     </a>

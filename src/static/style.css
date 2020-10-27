@@ -90,13 +90,28 @@ a:hover {
 
 .header {
     display: flex;
+    position: fixed;
+    top: 0;
     width: 100%;
     text-align: center;
     background-color: purple;
     color: #fff;
 }
 
+.header-results {
+    background-color: green;
+}
+
+.header-managing {
+    background-color: rgb(240, 136, 0);
+}
+
+.header-answering {
+    background-color: purple;
+}
+
 .header-large {
+    position: initial;
     padding: 4em;
     display: block;
 }
@@ -120,7 +135,7 @@ a:hover {
 }
 
 .content {
-    margin: 1em auto;
+    margin: 3em auto;
     max-width: 1200px;
 }
 

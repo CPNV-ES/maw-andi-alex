@@ -1,4 +1,4 @@
-<?= Component::new('header.php') ?>
+<?= Component::new('header.php', ['exercise' => $exercise, 'class' => 'header-managing']) ?>
 <div class="content">
     <h1>New Exercise</h1>
     <form class="form" action="/exercises" method="POST">
