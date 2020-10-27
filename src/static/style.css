@@ -16,6 +16,11 @@ h1 {
     margin: 0.5em 0;
 }
 
+dt {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
 input[type="text"],
 textarea,
 select {
@@ -79,6 +84,10 @@ thead > tr {
     font-weight: bold;
 }
 
+a:hover {
+    color: #3d0063;
+}
+
 .header {
     display: flex;
     width: 100%;
@@ -124,6 +133,10 @@ thead > tr {
     text-decoration: none;
     cursor: pointer;
     border-radius: 0.5em;
+}
+
+.button:hover {
+    color: #fff;
 }
 
 .button:focus {
@@ -230,4 +243,8 @@ thead > tr {
 
 .exercise-results tbody td {
     text-align: start;
+}
+
+table.question-result td {
+    text-align: left;
 }

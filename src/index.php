@@ -4,11 +4,13 @@ require '../vendor/autoload.php';
 
 require 'core/router.php';
 require 'core/renderer.php';
+require 'core/component.php';
 
 use Expreql\Expreql\Database;
 
 $config = parse_ini_file('config.ini');
 
+Component::set_path('components/');
 Database::set_config($config);
 $router = new Router();
 $renderer = Renderer::get_instance();
@@ -74,7 +76,7 @@ $router->get('/exercises/answering', function () use ($renderer) {
     require_once 'models/exercise.php';
 
     $exercises = Exercise::select()->where('state', 'answering')
-    ->join(Question::class)->execute();
+        ->join(Question::class)->execute();
 
     $renderer->view('views/exercises_answering.php')->values(['exercises' => $exercises])->render();
 });
@@ -194,7 +196,7 @@ $router->get('/exercises/:exercise_id/fields/:field_id/delete', function ($param
     Router::redirect('/exercises/' . $params['exercise_id'] . '/fields');
 });
 
-$router->post('/exercises/:exercise_id/fields/:field_id', function($params) {
+$router->post('/exercises/:exercise_id/fields/:field_id', function ($params) {
     require_once 'models/question.php';
 
     if (!is_int($params['exercise_id']) || !is_int($params['field_id'])) {
@@ -218,7 +220,7 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
     }
 
     $exercise = Exercise::select()->where('exercises.id', $params['id'])
-    ->join(Question::class)->execute()[0];
+        ->join(Question::class)->execute()[0];
 
     // Redirect to home if no questions in exercise
     if ($exercise->questions->count() == 0) {
@@ -232,9 +234,15 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
 $router->get('/exercises/:id/results', function ($params) use ($renderer) {
     require_once 'models/exercise.php';
     require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
 
     $exercise = Exercise::select()->where(Exercise::field('id'), $params['id'])
-        ->join(Fulfillment::class)->execute();
+        ->join([
+            Question::class,
+            Fulfillment::class => [
+                Response::class
+            ]
+        ])->execute();
 
     $renderer->view('views/exercise_results.php')->values([
         'exercise' => $exercise[0],
@@ -242,7 +250,7 @@ $router->get('/exercises/:id/results', function ($params) use ($renderer) {
 });
 
 // Create a new fulfillment with answers
-$router->post('/exercises/:id/fulfillments/new', function($params) {
+$router->post('/exercises/:id/fulfillments/new', function ($params) {
     require_once 'models/fulfillment.php';
     require_once 'models/response.php';
 
@@ -255,7 +263,7 @@ $router->post('/exercises/:id/fulfillments/new', function($params) {
         'exercises_id' => $params['id'],
     ]);
 
-    foreach ($_POST['questions'] as $key => $value){
+    foreach ($_POST['questions'] as $key => $value) {
         Response::insert([
             'text' => $value,
             'questions_id' => $key,
@@ -263,7 +271,75 @@ $router->post('/exercises/:id/fulfillments/new', function($params) {
         ]);
     }
 
-     Router::redirect('/exercises/' . $params['id'] . '/fulfillments/'. $fulfillment[0]->id . '/edit');
+    Router::redirect('/exercises/' . $params['id'] . '/fulfillments/' . $fulfillment[0]->id . '/edit');
+});
+
+$router->get('/exercises/:exercise_id/fulfillments/:fulfillment_id', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/fulfillment.php';
+    require_once 'models/question.php';
+    require_once 'models/response.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['fulfillment_id'])) {
+        Router::redirect('/');
+    }
+
+    $exercise = Exercise::select()->join([
+        Question::class,
+        Fulfillment::class => [
+            Response::class
+        ],
+    ])->where([
+        [Exercise::field('id'), $params['exercise_id']],
+        [Fulfillment::field('id'), $params['fulfillment_id']],
+    ])->execute();
+
+    // We need to map the questions and the responses together as they are not
+    // linked after executing the request, maybe this need to be done inside the
+    // ORM but it is not supported for now so we do this ourselves.
+    $user_responses = [];
+
+    foreach ($exercise[0]->questions as $question) {
+        $user_responses[$question->id] = [
+            'question' => $question
+        ];
+    }
+
+    foreach ($exercise[0]->fulfillments[0]->responses as $response) {
+        $user_responses[$response->questions_id]['response'] = $response;
+    }
+
+    $renderer->view('views/fulfillment_result.php')->values([
+        'exercise' => $exercise[0],
+        'fulfillment' => $exercise[0]->fulfillments[0],
+        'user_responses' => $user_responses,
+    ])->render();
+});
+
+$router->get('/exercises/:exercise_id/results/:question_id', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/question.php';
+    require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['question_id'])) {
+        Router::redirect('/');
+    }
+
+    $exercise = Exercise::select()->join([
+        Question::class,
+        Fulfillment::class => [
+            Response::class,
+        ],
+    ])->where([
+        [Exercise::field('id'), $params['exercise_id']],
+        [Question::field('id', $params['question_id'])],
+    ])->execute();
+
+    $renderer->view('views/question_result.php')->values([
+        'exercise' => $exercise[0],
+        'question' => $exercise[0]->questions[0],
+    ])->render();
 });
 
 // Fulfill an Exercise page

@@ -1,8 +1,4 @@
-<header class="header">
-    <a href="/">
-        <img src="/static/logo.png" class="logo" alt="logo">
-    </a>
-</header>
+<?= Component::new('header.php') ?>
 <div class="content">
     <div class="exercise-categories">
         <section>

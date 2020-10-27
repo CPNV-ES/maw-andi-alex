@@ -15,6 +15,10 @@ class Fulfillment extends Model
         'timestamp',
     ];
 
+    public static $has_many = [
+        Response::class => 'fulfillments_id'
+    ];
+
     public static $has_one = [
         Exercise::class => 'exercises_id'
     ];
