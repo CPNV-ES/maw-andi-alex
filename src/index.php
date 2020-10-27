@@ -266,4 +266,18 @@ $router->post('/exercises/:id/fulfillments/new', function($params) {
      Router::redirect('/exercises/' . $params['id'] . '/fulfillments/'. $fulfillment[0]->id . '/edit');
 });
 
+// Fulfill an Exercise page
+$router->get('/exercises/:exercise_id/fulfillments/:fulfillment_id/edit', function ($params) use ($renderer) {
+    require_once 'models/question.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['fulfillment_id'])) {
+        Router::redirect('/');
+    }
+
+    // Content
+
+    $renderer->view('views/fulfillments_edit.php')
+    ->values(['exercise' => $exercise])->render();
+});
+
 $router->execute();
