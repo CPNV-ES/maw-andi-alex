@@ -227,7 +227,7 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
         Router::redirect('/');
     }
 
-    $renderer->view('views/fulfillments_edit.php')
+    $renderer->view('views/fulfillments_new.php')
     ->values(['exercise' => $exercise])->render();
 });
 
