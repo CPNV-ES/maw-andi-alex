@@ -342,4 +342,10 @@ $router->get('/exercises/:exercise_id/results/:question_id', function ($params) 
     ])->render();
 });
 
+$router->get('/:', function() use ($renderer) {
+    http_response_code(404);
+    
+    $renderer->view('views/not_found.php')->render();
+});
+
 $router->execute();
