@@ -3,20 +3,20 @@
 
     <h1>Your take</h1>
     <p>If you'd like to come back later to finish, simply submit with blanks</p>
-    <form class="form" action="new" method="POST">
+    <form class="form" action="edit" method="POST">
 
-        <?php foreach($exercise->questions as $question): // Display every quetion ?>
+        <?php foreach($user_responses as $question): // Display every quetion ?>
             <!-- Label for every input -->
-            <label for="fulfillment_answers_<?= $question->type . "_" . $question->id ?>"><?= $question->label ?></label>
+            <label for="fulfillment_answers_<?= $question["question"]->id ?>"><?= $question["question"]->label ?></label>
 
-            <?php switch ($question->type): case "single_line": // Display input if "single_line" ?>
-            <input id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" type="text" name="questions[<?= $question->id ?>]" value="">
+            <?php switch ($question["question"]->type): case "single_line": // Display input if "single_line" ?>
+            <input id="fulfillment_answers_<?= $question["question"]->id ?>" type="text" name="questions[<?= $question["question"]->id ?>]" value="<?= $question["response"]->text ?>">
 
             <?php break; case "single_line_list": case "multi_line": // Display textarea if "single_line_list" or "multi_line" ?>
-            <textarea id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" name="questions[<?= $question->id ?>]" value="" cols="30" rows="3"></textarea>
+            <textarea id="fulfillment_answers_<?= $question["question"]->id ?>" name="questions[<?= $question["question"]->id ?>]" value="<?= $question["response"]->text ?>" cols="30" rows="3"></textarea>
 
             <?php break; default: // Default display the same input for "single_line" ?>
-            <input id="fulfillment_answers_<?= $question->type . "_" . $question->id ?>" type="text" name="questions[<?= $question->id ?>]" value="">
+            <input id="fulfillment_answers_<?= $question["question"]->id ?>" type="text" name="questions[<?= $question["question"]->id ?>]" value="<?= $question["response"]->text ?>">
             <?php break; ?>
 
             <?php endswitch; ?>

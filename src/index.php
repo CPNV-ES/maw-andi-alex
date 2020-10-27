@@ -344,16 +344,46 @@ $router->get('/exercises/:exercise_id/results/:question_id', function ($params) 
 
 // Fulfill an Exercise page
 $router->get('/exercises/:exercise_id/fulfillments/:fulfillment_id/edit', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/fulfillment.php';
     require_once 'models/question.php';
+    require_once 'models/response.php';
 
     if (!is_int($params['exercise_id']) || !is_int($params['fulfillment_id'])) {
         Router::redirect('/');
     }
 
-    // Content
+    $exercise = Exercise::select()->join([
+        Question::class,
+        Fulfillment::class => [
+            Response::class
+        ],
+    ])->where([
+        [Exercise::field('id'), $params['exercise_id']],
+        [Fulfillment::field('id'), $params['fulfillment_id']],
+    ])->execute();
+
+    // foreach ($exercise[0]->fulfillments[0]->responses as $key => $value) {
+    //     var_dump($value);
+    // }
+
+    $user_responses = [];
+
+    foreach ($exercise[0]->questions as $question) {
+        $user_responses[$question->id] = [
+            'question' => $question
+        ];
+    }
+
+    foreach ($exercise[0]->fulfillments[0]->responses as $response) {
+        $user_responses[$response->questions_id]['response'] = $response;
+    }
 
     $renderer->view('views/fulfillments_edit.php')
-    ->values(['exercise' => $exercise])->render();
+        ->values([
+            'exercise' => $exercise[0],
+            'user_responses' => $user_responses,
+            ])->render();
 });
 
 $router->execute();
