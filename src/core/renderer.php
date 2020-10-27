@@ -96,9 +96,7 @@ class Renderer
     public function render() : Renderer
     {
         // Register the variables set in values to the current scope
-        foreach($this->values as $key => $value) {
-            $$key = $value;
-        }
+        extract($this->values, EXTR_OVERWRITE);
 
         // Inherit the variable scope to allow the layout and view to access
         // variables set with $this->values

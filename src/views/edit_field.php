@@ -1,9 +1,4 @@
-<header class="header">
-    <a href="/">
-        <img src="/static/logo.png" class="logo" alt="logo">
-    </a>
-    <p class="header-context"><span>Exercise: </span><span><?= $exercise->title ?></span></p>
-</header>
+<?= Component::new('header.php', ['exercise' => $exercise]) ?>
 <div class="content">
     <h1>Editing field</h1>
     <form class="form" action="/exercises/<?= $exercise->id ?>/fields/<?= $field->id ?>" method="POST">
