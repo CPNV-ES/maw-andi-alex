@@ -382,4 +382,22 @@ $router->get('/exercises/:exercise_id/fulfillments/:fulfillment_id/edit', functi
             ])->render();
 });
 
+// Edit a fulfillment with answers
+$router->post('/exercises/:exercise_id/fulfillments/:fulfillment_id/edit', function ($params) {
+    require_once 'models/fulfillment.php';
+    require_once 'models/response.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['fulfillment_id'])) {
+        Router::redirect('/');
+    }
+
+    foreach ($_POST['questions'] as $key => $value) {
+        Response::update([
+            'text' => $value,
+        ])->where('id', $key)->execute();
+    }
+
+    Router::redirect('/exercises/' . $params['exercise_id'] . '/fulfillments/' . $params['fulfillment_id'] . '/edit');
+});
+
 $router->execute();
