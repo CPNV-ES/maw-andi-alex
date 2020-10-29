@@ -13,7 +13,7 @@
             <input id="fulfillment_answers_<?= $question["question"]->id ?>" type="text" name="questions[<?= $question["question"]->id ?>]" value="<?= $question["response"]->text ?>">
 
             <?php break; case "single_line_list": case "multi_line": // Display textarea if "single_line_list" or "multi_line" ?>
-            <textarea id="fulfillment_answers_<?= $question["question"]->id ?>" name="questions[<?= $question["question"]->id ?>]" value="<?= $question["response"]->text ?>" cols="30" rows="3"></textarea>
+            <textarea id="fulfillment_answers_<?= $question["question"]->id ?>" name="questions[<?= $question["question"]->id ?>]" cols="30" rows="3"><?= $question["response"]->text ?></textarea>
 
             <?php break; default: // Default display the same input for "single_line" ?>
             <input id="fulfillment_answers_<?= $question["question"]->id ?>" type="text" name="questions[<?= $question["question"]->id ?>]" value="<?= $question["response"]->text ?>">
