@@ -363,10 +363,6 @@ $router->get('/exercises/:exercise_id/fulfillments/:fulfillment_id/edit', functi
         [Fulfillment::field('id'), $params['fulfillment_id']],
     ])->execute();
 
-    // foreach ($exercise[0]->fulfillments[0]->responses as $key => $value) {
-    //     var_dump($value);
-    // }
-
     $user_responses = [];
 
     foreach ($exercise[0]->questions as $question) {
