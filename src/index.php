@@ -228,7 +228,7 @@ $router->get('/exercises/:id/fulfillments/new', function ($params) use ($rendere
     }
 
     $renderer->view('views/fulfillments_new.php')
-        ->values(['exercise' => $exercise])->render();
+    ->values(['exercise' => $exercise])->render();
 });
 
 $router->get('/exercises/:id/results', function ($params) use ($renderer) {
@@ -342,10 +342,68 @@ $router->get('/exercises/:exercise_id/results/:question_id', function ($params) 
     ])->render();
 });
 
+// Fulfill an Exercise page
+$router->get('/exercises/:exercise_id/fulfillments/:fulfillment_id/edit', function ($params) use ($renderer) {
+    require_once 'models/exercise.php';
+    require_once 'models/fulfillment.php';
+    require_once 'models/question.php';
+    require_once 'models/response.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['fulfillment_id'])) {
+        Router::redirect('/');
+    }
+
+    $exercise = Exercise::select()->join([
+        Question::class,
+        Fulfillment::class => [
+            Response::class
+        ],
+    ])->where([
+        [Exercise::field('id'), $params['exercise_id']],
+        [Fulfillment::field('id'), $params['fulfillment_id']],
+    ])->execute();
+
+    $user_responses = [];
+
+    foreach ($exercise[0]->questions as $question) {
+        $user_responses[$question->id] = [
+            'question' => $question
+        ];
+    }
+
+    foreach ($exercise[0]->fulfillments[0]->responses as $response) {
+        $user_responses[$response->questions_id]['response'] = $response;
+    }
+
+    $renderer->view('views/fulfillments_edit.php')
+        ->values([
+            'exercise' => $exercise[0],
+            'user_responses' => $user_responses,
+            ])->render();
+});
+
+// Edit a fulfillment with answers
+$router->post('/exercises/:exercise_id/fulfillments/:fulfillment_id/edit', function ($params) {
+    require_once 'models/response.php';
+
+    if (!is_int($params['exercise_id']) || !is_int($params['fulfillment_id'])) {
+        Router::redirect('/');
+    }
+
+    foreach ($_POST['questions'] as $key => $value) {
+        Response::update([
+            'text' => $value,
+        ])->where('id', $key)->execute();
+    }
+
+    Router::redirect('/exercises/' . $params['exercise_id'] . '/fulfillments/' . $params['fulfillment_id'] . '/edit');
+});
+
 $router->get('/:', function() use ($renderer) {
     http_response_code(404);
-    
+
     $renderer->view('views/not_found.php')->render();
+
 });
 
 $router->execute();
