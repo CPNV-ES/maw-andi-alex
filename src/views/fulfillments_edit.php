@@ -2,7 +2,7 @@
 <div class="content">
 
     <h1>Your take</h1>
-    <p>If you'd like to come back later to finish, simply submit with blanks</p>
+    <p>Bookmark this page, it's yours. You'll be able to come back later to finish.</p>
     <form class="form" action="edit" method="POST">
 
         <?php foreach($user_responses as $question): // Display every quetion ?>
