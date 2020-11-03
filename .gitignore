@@ -1,0 +1,9 @@
+.idea
+
+.vscode
+
+src/config.ini
+
+# Composer files
+/vendor/
+composer.lock

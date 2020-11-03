@@ -1,0 +1,14 @@
+{
+    "name": "maw1/maw-andi-alex",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "expreql/expreql": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:AlexandrePhilibertCPNV/expreql.git"
+        }
+    ]
+}

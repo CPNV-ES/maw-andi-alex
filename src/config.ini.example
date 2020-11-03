@@ -1,0 +1,7 @@
+[Database]
+
+host = 'localhost';
+db = 'exercise_looper';
+charset = 'utf8';
+user = 'username';
+pass = 'password';

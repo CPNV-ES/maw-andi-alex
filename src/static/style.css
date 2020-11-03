@@ -1,0 +1,265 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: purple;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0.2em 0;
+}
+
+dt {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+input[type="text"],
+textarea,
+select {
+    padding: 0.6em 0.8em;
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+textarea{
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 3em;
+}
+
+select {
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    appearance:none;
+    background: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #9b4dca;
+    outline: 0;
+}
+
+label {
+    font-size: 1.5em;
+    display: block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+th, td {
+    text-align: left;
+    padding: 0.8em;
+    padding-left: 0;
+}
+
+td:last-child {
+    text-align: right;
+}
+
+th, tr  {
+    border-bottom: 1px solid #ccc;
+}
+
+table a {
+    text-decoration: none;
+}
+
+thead > tr {
+    font-weight: bold;
+}
+
+a:hover {
+    color: #3d0063;
+}
+
+.header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    background-color: purple;
+    color: #fff;
+}
+
+.header-results {
+    background-color: green;
+}
+
+.header-managing {
+    background-color: rgb(240, 136, 0);
+}
+
+.header-answering {
+    background-color: purple;
+}
+
+.header-large {
+    position: initial;
+    padding: 4em;
+    display: block;
+}
+
+.logo {
+    max-height: 3em;
+    margin: 0 1em;
+}
+
+.header-title {
+    text-shadow: 0.2px 0.2px 2px black;
+}
+
+.actions {
+    text-align: center;
+    padding: 4em;
+}
+
+.actions > .button {
+    margin: 0 1em;
+}
+
+.content {
+    margin: 4em auto;
+    max-width: 1200px;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.8em 1.2em;
+    color: #fff;
+    font-weight: bold;
+    background-color: red;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0.5em;
+}
+
+.button:hover {
+    color: #fff;
+}
+
+.button:focus {
+    outline: 1px solid black;
+}
+
+.icon-button {
+    text-decoration: none;
+}
+
+.icon-button:hover {
+    fill: rgb(99, 23, 99);
+}
+
+.button-purple {
+    background-color: rgb(124, 21, 124);
+    border: 1px solid rgb(104, 18, 104);
+}
+
+.button-purple:hover {
+    background-color: rgb(139, 32, 139);
+}
+
+.button-orange {
+    background-color: rgb(240, 136, 0);
+    border: 1px solid rgb(180, 92, 9);
+}
+
+.button-orange:hover {
+    background-color: rgb(233, 143, 25);
+}
+
+.button-green {
+    background-color: green;
+    border: 1px solid rgb(4, 88, 4);
+}
+
+.button-green:hover {
+    background-color: rgb(22, 121, 22);
+}
+
+.button-img {
+    vertical-align: middle;
+    margin-right: 0.4em;
+}
+
+.form > * {
+    margin: 0.5em 0;
+}
+
+.form > input[type="text"] {
+    display: block;
+    width: 100%;
+}
+
+.exercise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.exercise-card {
+    flex-basis: 100%;
+    background-color: #F8F2FF;
+    border-radius: 1em;
+    text-align: center;
+    padding: 1em;
+}
+
+.exercise-title {
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+}
+
+.exercise-card > .button{
+    display: block;
+}
+
+.exercise-categories,
+.exercise-fields {
+    display: flex;
+    flex: 1 0;
+}
+
+.exercise-categories > * {
+    width: calc(100% / 3);
+    padding: 0 0.5em;
+}
+
+
+.exercise-fields > * {
+    width: 50%;
+    padding: 0 0.5em;
+}
+
+.exercise-results thead th:not(:first-child) {
+    color: #9b4dca;
+}
+
+.exercise-results tbody td:first-child {
+    color: #9b4dca;
+}
+
+.exercise-results tbody td {
+    text-align: start;
+}
+
+table.question-result td {
+    text-align: left;
+}
