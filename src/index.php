@@ -333,7 +333,8 @@ $router->get('/exercises/:exercise_id/results/:question_id', function ($params) 
         ],
     ])->where([
         [Exercise::field('id'), $params['exercise_id']],
-        [Question::field('id', $params['question_id'])],
+        [Question::field('id'), $params['question_id']],
+        [Response::field('questions_id'), $params['question_id']]
     ])->execute();
 
     $renderer->view('views/question_result.php')->values([
