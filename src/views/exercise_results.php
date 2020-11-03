@@ -19,17 +19,17 @@
                             <?= $fulfillment->timestamp ?>
                         </a>
                     </td>
-                    <?php for ($response_index = 0; $response_index < $exercise->questions->count(); $response_index++) : ?>
-                        <?php if (isset($fulfillment->responses[$response_index])) : ?>
-                            <?php if (strlen($fulfillment->responses[$response_index]->text) >= 10) : ?>
+                    <?php foreach ($fulfillment->responses as $response) : ?>
+                        <?php if (empty($response->text)) : ?>
+                            <td><img src="/static/close.svg" alt=""></td>
+                        <?php else : ?>
+                            <?php if (strlen($response->text) >= 10) : ?>
                                 <td><img src="/static/double_check.svg" alt=""></td>
                             <?php else : ?>
                                 <td><img src="/static/check.svg" alt=""></td>
                             <?php endif; ?>
-                        <?php else : ?>
-                            <td><img src="/static/close.svg" alt=""></td>
                         <?php endif; ?>
-                    <?php endfor; ?>
+                    <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>
