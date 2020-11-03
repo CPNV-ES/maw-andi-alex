@@ -1,4 +1,4 @@
-<?= Component::new('header.php', ['exercise' => $exercise, 'class' => 'header-results']) ?>
+<?= Component::new('header.php', ['class' => 'header-results']) ?>
 <div class="content">
     <div class="exercise-categories">
         <section>
