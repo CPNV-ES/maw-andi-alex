@@ -68,6 +68,42 @@ th, td {
     padding-left: 0;
 }
 
+.searchbar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 1em 0;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.searchbar > input[type=search] {
+    width: 100%;
+    padding: .8em .6em;
+    border: 1px solid #ccc;
+    border-radius: .2em;
+    width: 300px;
+}
+
+.searchbar > input[type=search]:focus {
+    border-width: 1px;
+    border-color: #9b4dca;
+}
+
+.searchbar > .search-icon {
+    position: absolute;
+    height: 2.5em;
+    width: 2.5em;
+    background: none;
+    border: none;
+    padding: 0;
+    background-image: url('/static/search.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+}
+
+
 td:last-child {
     text-align: right;
 }
