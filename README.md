@@ -47,3 +47,8 @@ src/
 You have to be in the src/ directory.
 
 `php -S localhost:8080`
+
+# Docs
+
+- [expreql (QueryBuilder)](https://github.com/AlexandrePhilibertCPNV/expreql)
+- [routier (Router)](https://github.com/AlexandrePhilibertCPNV/routier)
