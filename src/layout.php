@@ -9,6 +9,7 @@ $renderer = Renderer::get_instance();
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/style.css">
     <script src="/scripts/filter.js"></script>
+    <script src="/scripts/events.js"></script>
 </head>
 
 <body>
