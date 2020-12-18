@@ -28,7 +28,9 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <a href="/exercises/<?= $exercise->id ?>/status/answering" class="button button-purple"><img class="button-img" src="/static/chat.svg">Complete and be ready for answers</a>
+            <a href="/exercises/<?= $exercise->id ?>/status/answering" class="button button-purple" data-confirm="Are you sure? You won't be able to further edit this exercise">
+                <img class="button-img" src="/static/chat.svg">Complete and be ready for answers
+            </a>
         </section>
         <section>
             <h1>New Field</h1>
